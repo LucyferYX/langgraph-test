@@ -1,0 +1,14 @@
+{
+  "summary": "PR 'Refactor auth token validation' modifies 2 files",
+  "files_changed": [
+    "src/auth/token_validator.py",
+    "tests/test_token_validator.py"
+  ],
+  "change_type": "feature",
+  "impact": "low",
+  "breaking_changes": false,
+  "comments": [
+    "Can we centralize this logic?",
+    "This might break refresh flow"
+  ]
+}

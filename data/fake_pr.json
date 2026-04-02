@@ -1,0 +1,62 @@
+{
+  "repository": {
+    "owner": "your-org",
+    "name": "your-repo",
+    "full_name": "your-org/your-repo"
+  },
+  "pull_request": {
+    "number": 241,
+    "title": "Refactor auth token validation",
+    "body": "Centralizes token validation logic and updates tests",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-03-31T12:34:56Z",
+    "merge_commit_sha": "abc123",
+    "base_branch": "main",
+    "head_branch": "feature/auth-refactor",
+    "author": "username",
+    "labels": ["backend", "auth"]
+  },
+  "files": [
+    {
+      "filename": "src/auth/token_validator.py",
+      "status": "modified",
+      "additions": 42,
+      "deletions": 15,
+      "patch": "@@ ... diff content ..."
+    },
+    {
+      "filename": "tests/test_token_validator.py",
+      "status": "added",
+      "additions": 20,
+      "deletions": 0,
+      "patch": "@@ ... diff content ..."
+    }
+  ],
+  "commits": [
+    {
+      "sha": "abc123",
+      "message": "Refactor token validation"
+    }
+  ],
+  "issue_comments": [
+    {
+      "author": "reviewer1",
+      "body": "Can we centralize this logic?"
+    }
+  ],
+  "review_comments": [
+    {
+      "author": "reviewer2",
+      "body": "This might break refresh flow",
+      "path": "src/auth/token_validator.py"
+    }
+  ],
+  "reviews": [
+    {
+      "author": "reviewer3",
+      "state": "APPROVED",
+      "body": "Looks good overall"
+    }
+  ]
+}
