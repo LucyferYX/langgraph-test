@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Call PR Analysis API
         env:
-          PR_ANALYSIS_API_URL: ${{ secrets.PR_ANALYSIS_API_URL }}
+          PR_ANALYSIS_API_URL: ${{ vars.PR_ANALYSIS_API_URL }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           curl -X POST "${{ env.PR_ANALYSIS_API_URL }}/analyze-pr" \
