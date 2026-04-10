@@ -1,37 +1,40 @@
-# 🤖 Artificial Intelligence (AI) — Practical Overview
+Fixes #
 
-## 📌 What is AI?
-Artificial Intelligence (AI) refers to systems that can perform tasks typically requiring human intelligence, such as:
-- Understanding language
-- Recognizing patterns
-- Making decisions
-- Learning from data
+<!-- Replace everything above this line with a 1-2 sentence description of your change. Keep the "Fixes #xx" keyword and update the issue number. -->
 
----
+Read the full contributing guidelines: https://docs.langchain.com/oss/python/contributing/overview
 
-## 🧠 Core Types of AI
+> **All contributions must be in English.** See the [language policy](https://docs.langchain.com/oss/python/contributing/overview#language-policy).
 
-### 1. Narrow AI (Weak AI)
-- Designed for specific tasks
-- Examples: chatbots, recommendation systems, image recognition
+If you paste a large clearly AI generated description here your PR may be IGNORED or CLOSED!
 
-### 2. General AI (AGI)
-- Hypothetical systems with human-level intelligence across domains
+Thank you for contributing to LangGraph! Follow these steps to have your pull request considered as ready for review.
 
-### 3. Superintelligence
-- AI that surpasses human intelligence (theoretical)
+1. PR title: Should follow the format: TYPE(SCOPE): DESCRIPTION
 
----
+    - feat(langgraph): add multi-tenant support
+  - Allowed TYPE and SCOPE values: https://github.com/langchain-ai/langgraph/blob/main/.github/workflows/pr_lint.yml#L19-L43
 
-## ⚙️ Key Subfields
+2. PR description:
 
-### 📊 Machine Learning (ML)
-AI systems that learn from data instead of explicit programming.
+  - Write 1-2 sentences summarizing the change.
+  - The `Fixes #xx` line at the top is **required** for external contributions — update the issue number and keep the keyword. This links your PR to the approved issue and auto-closes it on merge.
+  - If there are any breaking changes, please clearly describe them.
+  - If this PR depends on another PR being merged first, please include "Depends on #PR_NUMBER" in the description.
 
-```python id="ml-basic"
-# Simple example: predicting y from x
-from sklearn.linear_model import LinearRegression
+3. Run `make format`, `make lint` and `make test` from the root of the package(s) you've modified.
 
-model = LinearRegression()
-model.fit(X, y)
-prediction = model.predict([[5]])
+  - We will not consider a PR unless these three are passing in CI.
+
+4. How did you verify your code works?
+
+Additional guidelines:
+
+  - All external PRs must link to an issue or discussion where a solution has been approved by a maintainer, and you must be assigned to that issue. PRs without prior approval will be closed.
+  - PRs should not touch more than one package unless absolutely necessary.
+  - Do not update the `uv.lock` files or add dependencies to `pyproject.toml` files (even optional ones) unless you have explicit permission to do so by a maintainer.
+
+## Social handles (optional)
+<!-- If you'd like a shoutout on release, add your socials below -->
+Twitter: @
+LinkedIn: https://linkedin.com/in/
