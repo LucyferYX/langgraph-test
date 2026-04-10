@@ -1,0 +1,127 @@
+# Automated Change Documentation
+
+This tool automates the generation of technical documentation for merged Pull Requests using Azure OpenAI.
+
+## Tool's Main Goal
+
+Automatically generate meaningful documentation when a PR is merged by analyzing:
+- **What was changed:** file modifications, additions, removals
+- **Why it was changed:** commit messages, PR description, discussion
+- **What it affects:** impact analysis, change classifications
+
+---
+
+## Architecture
+
+The tools consists of 3 **main layers**:
+
+* **Data layer** (`data/`): Handles ingestion and normalization. It strips away the noise of the GitHub API, calculates impact thresholds (line counts/file counts), and prepares a clean dictionary for the AI.
+
+* **Process layer** (`process/`): Manages the Azure OpenAI interaction, uses Pydantic schemas to enforce strict data structures and handles retry logic if the AI provides malformed JSON.
+
+* **Output layer** (`output/`): Transforms validated internal objects into high-quality, human-readable Markdown.
+
+These layers are brought together by two primary **entry points**:
+
+* `main.py`: The CLI Orchestrator. It manages the end-to-end flow for terminal users: fetching the PR, running the pipeline, triggering the analysis, and saving the results to the `exports/` folder.
+
+* `app.py`: The Web Entry Point using FastAPI. It provides a way to call the tool through a hosted server.
+
+Data storing is managed in 2 areas:
+
+* `imports/`: Used for development and testing. It stores local mock data (e.g., fake_pr.json) allowing the pipeline to be tested without hitting the GitHub API rate limits.
+
+* `exports/`: The storage destination for final outputs. This folder contains the generated .md and .json files, separated from the source code.
+
+## Tool Process Walkthrough
+
+1. **Ingestion**: `main.py` receives a PR number. It triggers `ingestor.py`, which uses the GitHub API to collect the PR description, commit messages, file diffs, and comments.
+2. **Normalization**: The raw data passes through `pipeline.py` that cleans the text, calculates heuristic impact scores, and structures the information into a format optimized for an LLM.
+3. **Analysis**: `analyzer.py` sends the structured data to Azure OpenAI via `llm_client.py`. It uses a specialized prompt from `prompts.py` to request a JSON response.
+4. **Validation**: `analyzer.py` catches any malformed AI responses. It uses `schemas.py` (Pydantic) to validate the data. If the JSON is invalid, it sends the error back to the AI for a corrected retry.
+5. **Rendering**: Once valid data is received, `renderer.py` converts the JSON object into a formatted Markdown document.
+6. **Saving**: `main.py` saves the final Markdown and JSON artifacts into the `/exports` folder.
+
+
+## Setup
+
+### 1. Prerequisites
+- **Python 3.12**
+- **Azure OpenAI Resource:** Access to a deployed GPT model.
+
+### 2. Dependencies
+(Optional) Create virtual environment:
+```bash
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+Install dependencies from `requirements.txt`:
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 3. Environment Configuration
+Create a `.env` file in the root directory for Azure OpenAI config:
+```env
+AZURE_OPENAI_BASE_URL=https://your-resource.openai.azure.com/
+AZURE_OPENAI_DEPLOYMENT=model-name
+```
+
+(Optional) Github config can be added in `.env` as well:
+- GITHUB_TOKEN is PAT for accessing private repos.
+- GITHUB_REPOSITORY can also be passed as an argument.
+```env
+GITHUB_TOKEN=your_token_here
+GITHUB_REPOSITORY=owner/repo
+```
+
+### 4. Azure Authentication (Local Development)
+This tool uses DefaultAzureCredential. For local development, you must be logged into the Azure CLI:
+1. Install the Azure CLI.
+```bash
+winget install -e --id Microsoft.AzureCLI
+```
+2. Authenticate with Azure.
+```
+az login -t [your-ID] --use-device-code
+```
+
+
+## Usage
+
+There exist multiple ways this tool can be called:
+
+### Existing Github PR:
+
+1. Find the PR number of public repo.
+    * e.g. PR number \#7392 of repo langchain-ai/langgraph
+2. Run `py main.py <PR_NUMBER> [REPO_NAME]`
+    * e.g. `py main.py 7392 langchain-ai/langgraph`
+
+    OR
+<!-- -->
+1. Add GITHUB_REPOSITORY in `.env`
+    * e.g. `GITHUB_REPOSITORY=your-name/your-repo`
+2. Run `py main.py <PR_NUMBER>`
+    * e.g. `py main.py 123`
+
+### Local mock data:
+
+1. Add .json file to /data folder.
+    * e.g. `/data/pr_data.json`
+2. Run `py main.py <JSON>`
+    * e.g. `py main.py pr_data.json`
+
+### GitHub Actions:
+
+The tool is designed to run automatically on PR merges. To test manually:
+1. Ensure your GitHub Repository Secrets contain your Azure and GitHub credentials.
+2. Run `python app.py`
+
+
+## Export
+Files are saved in the `/exports` directory:
+- `change_documentation.md`: The final documentation report.
+- `change_documentation.json`: Validated data in JSON format.
+- `structured_pr_data.json`: The intermediate data used for AI context.
