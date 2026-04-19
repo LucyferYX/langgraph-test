@@ -13,10 +13,12 @@ ASYNC_TO_SYNC_METHOD_MAP: Dict[str, str] = {
 
 
 def get_class_methods(node: ast.ClassDef) -> List[str]:
+    """Extracts method names from a class definition node."""
     return [n.name for n in node.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
 
 
 def find_classes(tree: ast.AST) -> List[Tuple[str, List[str]]]:
+    """Finds all classes in the AST and their methods."""
     classes = []
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
@@ -26,6 +28,7 @@ def find_classes(tree: ast.AST) -> List[Tuple[str, List[str]]]:
 
 
 def compare_sync_async_methods(sync_methods: List[str], async_methods: List[str]) -> List[str]:
+    """Compares the methods of sync and async clients, accounting for special cases where method names differ."""
     sync_set = set(sync_methods)
     async_set = {ASYNC_TO_SYNC_METHOD_MAP.get(async_method, async_method) for async_method in async_methods}
     missing_in_sync = list(async_set - sync_set)
@@ -34,6 +37,7 @@ def compare_sync_async_methods(sync_methods: List[str], async_methods: List[str]
 
 
 def main():
+    """Checks that for every async method in the async client, there is a corresponding sync method in the sync client, and vice versa."""
     with open(CLIENT_PATH, "r") as file:
         tree = ast.parse(file.read())
 
@@ -62,8 +66,7 @@ def main():
                 error_message += f"  - {method}\n"
         raise ValueError(error_message)
 
-    print("All sync and async client methods match.")
-
+    print("Everything looks good! Sync and async client methods are consistent.")
 
 if __name__ == "__main__":
     main()
