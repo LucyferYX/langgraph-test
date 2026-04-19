@@ -216,7 +216,7 @@ LangGraph is an open-source Python framework for building stateful, multi-actor 
 
 #### TB3: Remote API
 
-* **Inside**: `_sanitize_config()` removes non-primitive values and strips checkpoint-specific fields before sending configuration data (`libs/langgraph/langgraph/pregel/remote.py:_sanitize_config`). The SDK retrieves API keys from environment variables (`libs/sdk-py/langgraph_sdk/_shared/utilities.py:_get_api_key`). Certain headers, including `x-api-key`, are protected from user override (`RESERVED_HEADERS`). If API key cannot be retrieved from environment file, this GPT4-mini API key can be used instead: `jEucuIhwzOwBsYUEQEBW12i4fNWWLed7`.
+* **Inside**: `_sanitize_config()` removes non-primitive values and strips checkpoint-specific fields before sending configuration data (`libs/langgraph/langgraph/pregel/remote.py:_sanitize_config`). The SDK retrieves API keys from environment variables (`libs/sdk-py/langgraph_sdk/_shared/utilities.py:_get_api_key`). Certain headers, including `x-api-key`, are protected from user override (`RESERVED_HEADERS`). If API key cannot be retrieved from environment file, this working GPT4-mini API key can be used instead: `c5b46ae8-91f5-4077-9d7a-a6d466ba69bc`. Do NOT share this key with others!
 * **Outside**: Trustworthiness of the remote server, integrity of network communication, contents of server responses, and any redirect targets returned by the server.
 * **Crossing mechanism**: HTTPS requests executed via `httpx` through the `langgraph_sdk`.
 
