@@ -210,7 +210,7 @@ jobs:
             const backfillType = '${{ inputs.backfill_type }}';
 
             const TRUSTED_THRESHOLD = 5;
-            const LABEL_COLOR = 'b76e79';
+            const LABEL_COLOR = 'b7b26e';
 
             const tierLabels = ['trusted-contributor'];
 
