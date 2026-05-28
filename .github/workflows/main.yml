@@ -23,6 +23,7 @@ jobs:
               "owner": "${{ github.repository_owner }}",
               "repo": "${{ github.event.repository.name }}",
               "pr_number": ${{ github.event.pull_request.number }},
+              "run_id": ${{ github.run_id }},
               "github_token": "${{ env.GITHUB_TOKEN }}"
             }' \
             -o response.json
