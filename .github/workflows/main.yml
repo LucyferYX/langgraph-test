@@ -1,3 +1,5 @@
+name: Generate Change Documentation on PR Merge
+
 on:
   pull_request:
     types: [closed]
@@ -20,5 +22,20 @@ jobs:
             -d '{
               "owner": "${{ github.repository_owner }}",
               "repo": "${{ github.event.repository.name }}",
-              "pr_number": ${{ github.event.pull_request.number }}
+              "pr_number": ${{ github.event.pull_request.number }},
+              "github_token": "${{ env.GITHUB_TOKEN }}",
+              "run_ai": false
             }'
+            -o response.json
+      - name: Create markdown file
+        run: |
+          if [ "$(jq '.change_documentation' response.json)" != "false" ]; then
+            jq -r '.change_documentation' response.json > change_documentation.md
+          fi
+
+      - name: Upload artifact
+        if: ${{ hashFiles('change_documentation.md') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: change_documentation-pr-${{ github.event.pull_request.number }}
+          path: change_documentation.md
