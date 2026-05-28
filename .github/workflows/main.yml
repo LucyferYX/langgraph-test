@@ -38,3 +38,7 @@ jobs:
         with:
           name: change_documentation-pr-${{ github.event.pull_request.number }}
           path: change_documentation.md
+      - name: Publish summary
+        if: ${{ hashFiles('change_documentation.md') != '' }}
+        run: |
+          cat change_documentation.md >> $GITHUB_STEP_SUMMARY
