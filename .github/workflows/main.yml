@@ -23,9 +23,8 @@ jobs:
               "owner": "${{ github.repository_owner }}",
               "repo": "${{ github.event.repository.name }}",
               "pr_number": ${{ github.event.pull_request.number }},
-              "github_token": "${{ env.GITHUB_TOKEN }}",
-              "run_ai": false
-            }'
+              "github_token": "${{ env.GITHUB_TOKEN }}"
+            }' \
             -o response.json
       - name: Create markdown file
         run: |
