@@ -1,8 +1,8 @@
 # LucyferYX/langgraph-test — Codebase State
-> Auto-generated. Last updated after PR #14.
+> Auto-generated. Last updated after PR #26.
 
 ## What This Project Is
-This repository provides a framework for building and using agents with integrated tools, demonstrated through practical examples. It includes capabilities for defining tools, constructing stateful agents, and managing message routing within agent workflows.
+This repository focuses on creating and maintaining change documents that describe the current state of a codebase. It includes documentation to provide transparency and up-to-date overviews of the project and its example agents.
 
-## Agent Examples
-The repository includes a calculator agent example demonstrating how to build agents with integrated tools for basic arithmetic operations. The current example supports addition and subtraction but no longer includes multiply and divide functions, as these were removed to correct tool naming inconsistencies. This example showcases agent construction, stateful behavior, and message routing using the framework.
+## Documentation
+The repository includes an auto-generated documentation file, CODEBASE_STATE.md, which outlines the project purpose and details example agents. This file reflects the current state of the codebase, including recent updates such as the removal of multiply and divide functions in the calculator agent.
