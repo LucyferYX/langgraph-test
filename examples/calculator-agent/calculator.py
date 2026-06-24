@@ -16,20 +16,6 @@ def subtract(a: float, b: float) -> float:
     return a - b
 
 
-@tool
-def multiply(a: float, b: float) -> float:
-    """Multiply two numbers."""
-    return a * b
-
-
-@tool
-def divide(a: float, b: float) -> float:
-    """Divide two numbers. Returns None if dividing by zero."""
-    if b == 0:
-        return None
-    return a / b
-
-
 # Create a list of all available tools
 CALCULATOR_TOOLS = [add, subtract, multiply, divide]
 
